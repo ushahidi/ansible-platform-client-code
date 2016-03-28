@@ -10,4 +10,4 @@
     command: gulp build
     sudo: false
     args:
-      chdir: {{ platform_client_base_path }}
+      chdir: "{{ platform_client_base_path }}"
