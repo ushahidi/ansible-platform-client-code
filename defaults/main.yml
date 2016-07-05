@@ -1,6 +1,11 @@
 ---
+platform_client_base_path: /var/www/platform-client
 platform_client_version: develop
 platform_client_repo_url: "https://github.com/ushahidi/platform-client.git"
-
-# platform_cdn_baseurl
-# platform_cdn_container
+platform_client_update: yes
+platform_client_backend_url: ""
+platform_client_tx_username: ""
+platform_client_tx_password: ""
+platform_client_intercom_appid: ""
+platform_client_multisite_domain: ""
+platform_client_multisite_api_domain: "api.{{platform_client_multisite_domain}}"
