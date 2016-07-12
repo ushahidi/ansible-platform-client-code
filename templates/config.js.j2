@@ -18,5 +18,5 @@ window.ushahidi = {
 // The API will be zombies.api.ushahidi.io
 var deploymentsDomain = '{{ platform_client_multisite_domain }}';
 var apiDomain = '{{ platform_client_multisite_api_domain }}';
-window.backendUrl = location.protocol + "//" + location.hostname.replace(deploymentsDomain, apiDomain) + (location.port ? ":" + location.port : "");
+window.ushahidi.backendUrl = location.protocol + "//" + location.hostname.replace(deploymentsDomain, apiDomain) + (location.port ? ":" + location.port : "");
 {% endif %}
