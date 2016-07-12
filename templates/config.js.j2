@@ -8,7 +8,8 @@
 window.ushahidi = {
 	gaEnabled : {{ 'true' if platform_client_ga_key else 'false' }},
 	gaKey : "{{ platform_client_ga_key }}",
-	intercomAppId: "{{ platform_client_intercom_appid }}"
+	intercomAppId: "{{ platform_client_intercom_appid }}",
+	mapboxApiKey: "{{ platform_client_mapbox_api_key }}"
 };
 
 {% if platform_client_multisite_domain %}
