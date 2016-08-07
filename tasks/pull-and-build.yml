@@ -1,0 +1,37 @@
+---
+  - name: deploy platform client code from github
+    git: repo={{ platform_client_repo_url }} dest={{ platform_client_base_path }} version={{ platform_client_version | default("master") }} force={{ platform_client_update }} update={{ platform_client_update }}
+    sudo: false
+
+  # Ideally this happens in provisioning role
+  - name: install gulp
+    npm: name=gulp global=yes
+    sudo: true
+
+  - name: install packages using npm
+    npm:
+      path: "{{ platform_client_base_path }}"
+      state: "{{ (platform_client_update == 'yes') | ternary('latest','present') }}"
+
+  - name: copy .env file to server
+    template: src="templates/platform-client-dot-env.j2" dest="{{ platform_client_base_path }}/.env"
+    sudo: false
+
+  - name: copy config.js file to server
+    template: src="templates/config.js.j2" dest={{ platform_client_base_path }}/server/www/config.js
+    sudo: false
+
+  # todo move to gulp build
+  - name: download translations
+    command: gulp transifex-download
+    sudo: false
+    args:
+      chdir: "{{ platform_client_base_path }}"
+
+  - name: run gulp to complete setup
+    command: gulp build
+    sudo: false
+    args:
+      chdir: "{{ platform_client_base_path }}"
+
+  # should we notify other roles here?

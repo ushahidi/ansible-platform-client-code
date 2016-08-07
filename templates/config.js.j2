@@ -20,4 +20,6 @@ window.ushahidi = {
 var deploymentsDomain = '{{ platform_client_multisite_domain }}';
 var apiDomain = '{{ platform_client_multisite_api_domain }}';
 window.ushahidi.backendUrl = location.protocol + "//" + location.hostname.replace(deploymentsDomain, apiDomain) + (location.port ? ":" + location.port : "");
+{% elif platform_client_backend_url %}
+window.ushahidi.backendUrl = "{{ platform_client_backend_url }}";
 {% endif %}

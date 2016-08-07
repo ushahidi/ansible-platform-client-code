@@ -1,13 +1,19 @@
 ---
+platform_client_deploy_flavor: pull-and-build
+# common variables
 platform_client_base_path: /var/www/platform-client
+platform_client_intercom_appid: ""
+platform_client_mapbox_api_key: ""
+platform_client_raven_url: ""
+platform_client_backend_url: ""
+platform_client_ga_key: ""
+platform_client_multisite_domain: ""
+platform_client_multisite_api_domain: "api.{{platform_client_multisite_domain}}"
+# pull-and-build specific
 platform_client_version: develop
 platform_client_repo_url: "https://github.com/ushahidi/platform-client.git"
 platform_client_update: yes
-platform_client_backend_url: ""
 platform_client_tx_username: ""
 platform_client_tx_password: ""
-platform_client_intercom_appid: ""
-platform_client_multisite_domain: ""
-platform_client_multisite_api_domain: "api.{{platform_client_multisite_domain}}"
-platform_client_mapbox_api_key: ""
-platform_client_raven_url: ""
+# rsync-deploy specific
+platform_client_deploy_src: ""

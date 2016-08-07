@@ -1,0 +1,18 @@
+---
+- name: install rsync
+  apt: name=rsync state=present
+  sudo: true
+- name: ensure destination folder
+  file: path={{ platform_client_base_path }}/server/www state=directory
+- name: deploy by sync
+  synchronize:
+  args:
+    archive: no
+    recursive: yes
+    perms: yes
+    times: yes
+    src: "{{ platform_client_deploy_src }}/"
+    dest: "{{ platform_client_base_path }}/server/www/"
+- name: copy config.js file to server
+  template: src="templates/config.js.j2" dest={{ platform_client_base_path }}/server/www/config.js
+  sudo: false
