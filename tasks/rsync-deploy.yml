@@ -2,17 +2,25 @@
 - name: install rsync
   apt: name=rsync state=present
   sudo: true
+
+- name: ensure presence of source files
+  stat: path="{{ platform_client_deploy_src }}/index.html"
+  register: src_index
+- fail: missing source files at {{ platform_client_deploy_src }}
+  when: src_index.stat.isreg is not defined or not src_index.stat.isreg
+
 - name: ensure destination folder
   file: path={{ platform_client_base_path }}/server/www state=directory
+
 - name: deploy by sync
-  synchronize:
+  synchronize: src="{{ platform_client_deploy_src }}/" dest="{{ platform_client_base_path }}/{{ platform_client_static_folder }}/"
   args:
     archive: no
+    delete: yes
     recursive: yes
     perms: yes
     times: yes
-    src: "{{ platform_client_deploy_src }}/"
-    dest: "{{ platform_client_base_path }}/server/www/"
+
 - name: copy config.js file to server
-  template: src="templates/config.js.j2" dest={{ platform_client_base_path }}/server/www/config.js
+  template: src="templates/config.js.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.js
   sudo: false
