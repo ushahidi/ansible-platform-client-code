@@ -1,0 +1,9 @@
+---
+- hosts: all
+  roles:
+  - { role: ansible-platform-client-code,
+      platform_client_deploy_flavor: rsync,
+      platform_client_deploy_src: /usr/src/ushahidi-platform-client-bundle,
+      platform_client_base_path: /var/www/platform-client,
+      platform_client_static_folder: ""
+    }

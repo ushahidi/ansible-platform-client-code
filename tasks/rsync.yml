@@ -3,10 +3,10 @@
   apt: name=rsync state=present
   sudo: true
 
-- name: ensure presence of source files
-  stat: path="{{ platform_client_deploy_src }}/index.html"
+- name: ensure presence of source files at {{ platform_client_deploy_src }}
+  local_action: stat path="{{ platform_client_deploy_src }}/index.html"
   register: src_index
-- fail: missing source files at {{ platform_client_deploy_src }}
+- fail: msg=missing source files at {{ platform_client_deploy_src }}
   when: src_index.stat.isreg is not defined or not src_index.stat.isreg
 
 - name: ensure destination folder

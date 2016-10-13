@@ -36,10 +36,12 @@ platform_client_deploy_src: ""
 
 # - destination bucket (required) and prefix (optional)
 platform_client_s3_dest_bucket: ""
-platform_client_s3_dest_prefix: ""
-# - s3 api access details
-platform_client_aws_access_key_id: ""
-platform_client_aws_secret_access_key: ""
-platform_client_aws_default_region: ""
+platform_client_s3_dest_prefix: ""    # don't comment this default
+
+# - s3 api access details (can also be provided via environment)
+# platform_client_aws_access_key_id:
+# platform_client_aws_secret_access_key:
+# platform_client_aws_default_region: 
+
 # - aws-cli executable (optional)
 platform_client_aws_cli: aws

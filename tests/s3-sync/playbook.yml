@@ -1,0 +1,9 @@
+---
+- hosts: all
+  roles:
+  - { role: ansible-platform-client-code,
+      platform_client_deploy_flavor: s3-sync,
+      platform_client_deploy_src: /usr/src/ushahidi-platform-client-bundle,
+      platform_client_s3_dest_bucket: platform-client-code-test,
+      platform_client_aws_cli: /usr/bin/aws-minio   # for testing environment only
+    }

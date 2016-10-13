@@ -1,0 +1,6 @@
+---
+- hosts: all
+  roles:
+  - { role: ansible-platform-client-code,
+      platform_client_deploy_flavor: pull-and-build
+    }

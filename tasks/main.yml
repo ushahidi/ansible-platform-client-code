@@ -1,10 +1,3 @@
 ---
 
-- include: pull-and-build.yml
-  when: (platform_client_deploy_flavor == 'pull-and-build')
-
-- include: rsync-deploy.yml
-  when: (platform_client_deploy_flavor == 'rsync')
-
-- include: s3-sync.yml
-  when: (platform_client_deploy_flavor == 's3-sync')
+- include: "{{ platform_client_deploy_flavor }}.yml"
