@@ -2,5 +2,7 @@
 - hosts: all
   roles:
   - { role: ansible-platform-client-code,
-      platform_client_deploy_flavor: pull-and-build
+      platform_client_deploy_flavor: pull-and-build,
+      platform_client_tx_username: "{{ lookup('env', 'TX_USERNAME') }}",
+      platform_client_tx_password: "{{ lookup('env', 'TX_PASSWORD') }}"
     }

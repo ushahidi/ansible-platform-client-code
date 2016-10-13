@@ -6,6 +6,7 @@ deployer:
   volumes:
     - ./:/etc/ansible/roles/ansible-platform-client-code
     - ./tests:/tests
+  encrypted_env_file: deployment.env.encrypted
 
 target:
   image: tuxpiper/ansible-testinfra-docker:ubuntu-trusty

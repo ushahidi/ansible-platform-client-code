@@ -7,3 +7,10 @@
       platform_client_base_path: /var/www/platform-client,
       platform_client_static_folder: ""
     }
+
+- hosts: all
+  tasks:
+    - block:
+      - command: testinfra --hosts="{{ inventory_hostname }}" test.py
+      ignore_errors: yes
+      delegate_to: 127.0.0.1

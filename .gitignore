@@ -1,3 +1,6 @@
 *.retry
 __pycache__
 .cache
+codeship.aes
+deployment.env
+

@@ -14,21 +14,19 @@ fi
 
 # Ansible tweaks for codeship :(
 export ANSIBLE_HOST_KEY_CHECKING="False"
-cat >> /etc/ansible/ansible.cfg << EOM
+cat >> /etc/ansible/ansible.cfg <<EOM
 [ssh_connection]
-ssh_args=
+control_path=/dev/shm/ansible-ssh-%%h-%%p-%%r
 EOM
 
-# cd into the flavor files
+# cd into the flavor files (first argument)
 cd ./$1
 
 if [ -f ./pre.sh ]; then
 	bash ./pre.sh || exit 1
 fi
 
-ansible-playbook playbook.yml || exit 1
+# run the specified playbook (optional second argument, defaults to playbook.yml)
+playbook=${2:-playbook}.yml
 
-if [ -f test.py ]; then
-	set -e
-	testinfra --hosts=target test.py
-fi
+ansible-playbook $playbook || exit 1
