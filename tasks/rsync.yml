@@ -10,7 +10,7 @@
   when: src_index.stat.isreg is not defined or not src_index.stat.isreg
 
 - name: ensure destination folder
-  file: path={{ platform_client_base_path }}/server/www state=directory
+  file: path={{ platform_client_base_path }}/{{ platform_client_static_folder }} state=directory
 
 - name: deploy by sync
   synchronize: src="{{ platform_client_deploy_src }}/" dest="{{ platform_client_base_path }}/{{ platform_client_static_folder }}/"
