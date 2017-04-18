@@ -13,6 +13,7 @@ platform_client_deploy_flavor: pull-and-build
 platform_client_base_path: /var/www/platform-client
 platform_client_static_folder: server/www
 platform_client_intercom_appid: ""
+platform_client_app_store_id: ""
 platform_client_mapbox_api_key: ""
 platform_client_raven_url: ""
 platform_client_backend_url: ""
@@ -29,7 +30,7 @@ platform_client_tx_password: ""
 
 ## rsync and s3-sync specific
 
-# - path to built client 
+# - path to built client
 platform_client_deploy_src: ""
 
 ## s3-sync specific
@@ -41,7 +42,7 @@ platform_client_s3_dest_prefix: ""    # don't comment this default
 # - s3 api access details (can also be provided via environment)
 # platform_client_aws_access_key_id:
 # platform_client_aws_secret_access_key:
-# platform_client_aws_default_region: 
+# platform_client_aws_default_region:
 
 # - aws-cli executable (optional)
 platform_client_aws_cli: aws
