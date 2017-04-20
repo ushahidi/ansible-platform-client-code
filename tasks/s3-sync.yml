@@ -16,6 +16,10 @@
   - name: generate config.js file before sync to bucket
     template: src="templates/config.js.j2" dest={{ platform_client_deploy_src }}/config.js
 
+  - name: generate config.json before sync to bucket
+    template: src="templates/config.json.j2" dest={{ platform_client_deploy_src }}/config.json
+    sudo: false
+
   - name: synchronize client contents to bucket
     command: "{{ platform_client_aws_cli }} s3 sync --delete {{ platform_client_deploy_src }} s3://{{ platform_client_s3_dest_bucket }}/{{ platform_client_s3_dest_prefix }}"
 

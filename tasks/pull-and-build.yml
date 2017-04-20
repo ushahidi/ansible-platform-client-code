@@ -21,6 +21,10 @@
     template: src="templates/config.js.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.js
     sudo: false
 
+  - name: copy config.json file to server
+    template: src="templates/config.json.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.json
+    sudo: false
+
   # todo move to gulp build
   - name: download translations
     command: gulp transifex-download
