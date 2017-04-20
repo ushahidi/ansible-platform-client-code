@@ -2,9 +2,9 @@
 	"client_id": "{{ platform_client_oauth_id }}",
 	"client_secret": "{{ platform_client_oauth_secret }}",
 	{% if platform_client_multisite_domain %}
-	"backend_domainl": "{{ platform_client_multisite_api_domain }}",
+	"backend_domain": "{{ platform_client_multisite_api_domain }}",
 	{% elif platform_client_backend_url %}
-	"backend_domainl": "{{ platform_client_backend_url }}",
+	"backend_domain": "{{ platform_client_backend_url }}",
 	{% endif %}
 	"google_analytics_id": "{{ platform_client_ga_key }}",
 	"intercom_app_id": "{{ platform_client_intercom_appid }}",
