@@ -1,3 +1,5 @@
 ---
 # see defaults/main.yml for details about the flavors
+- fail: msg="platform_client_deploy_flavor is not defined"
+  when: platform_client_deploy_flavor is not defined
 - include: "{{ platform_client_deploy_flavor }}.yml"

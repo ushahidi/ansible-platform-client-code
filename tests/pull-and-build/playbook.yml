@@ -1,5 +1,7 @@
 ---
 - hosts: all
+  pre_tasks:
+    - set_fact: deploy_user=deploy
   roles:
   - { role: ansible-platform-client-code,
       platform_client_deploy_flavor: pull-and-build,
