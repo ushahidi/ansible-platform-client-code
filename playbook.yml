@@ -1,0 +1,9 @@
+---
+- hosts: all
+  roles:
+    - role: williamyeh.nodejs
+      nodejs_version: "6"
+      sudo: true
+    - role: ansible-platform-client-code
+      deploy_user: deploy
+      platform_client_deploy_flavor: pull-and-build

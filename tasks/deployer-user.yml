@@ -1,6 +1,7 @@
 ---
 - block:
-  - fail: msg="deploy_user is not defined"
+  - name: check deploy_user
+    fail: msg="deploy_user is not defined"
     when: deploy_user is not defined or not deploy_user
 
   - name: set up deployment account

@@ -1,0 +1,15 @@
+---
+dependency:
+  name: galaxy
+  requirements_file: requirements.yml
+driver:
+  name: docker
+docker:
+  containers:
+    - name: ansible-platform-client-code
+      image: ubuntu
+      image_version: trusty
+      ansible_groups:
+        - group1
+verifier:
+  name: testinfra

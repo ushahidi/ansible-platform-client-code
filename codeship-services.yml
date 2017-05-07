@@ -26,7 +26,7 @@ target_nodejs:
     path: tests/docker
     dockerfile_path: target-nodejs.Dockerfile
 
-# specific services for S3 sync 
+# specific services for S3 sync
 deployer_s3_sync:
   image: tuxpiper/ansible-testinfra-docker:ubuntu-trusty-cc
   links:

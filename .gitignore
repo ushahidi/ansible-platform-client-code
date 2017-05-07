@@ -3,4 +3,6 @@ __pycache__
 .cache
 codeship.aes
 deployment.env
+.molecule
+*.pyc
 
