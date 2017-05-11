@@ -13,6 +13,7 @@
 
   become: true
   become_user: root
+  tags: server-provision
 
 - block:
   - name: deploy platform client code from github
@@ -45,3 +46,4 @@
 
   become: true
   become_user: "{{ deploy_user }}"
+  tags: code-deploy

@@ -28,3 +28,4 @@
     AWS_SECRET_ACCESS_KEY: "{{ platform_client_aws_secret_access_key | default(lookup('env', 'AWS_SECRET_ACCESS_KEY')) }}"
     AWS_DEFAULT_REGION: "{{ platform_client_aws_default_region | default(lookup('env', 'AWS_DEFAULT_REGION')) }}"
   delegate_to: 127.0.0.1
+  tags: code-deploy
