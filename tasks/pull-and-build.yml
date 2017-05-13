@@ -11,6 +11,15 @@
       - gulp
       - bower
 
+  - name: give deployer user access to ssh agent
+    shell: |
+      if [ -n "$SSH_AUTH_SOCK" ]; then
+        setfacl -m u:{{ deploy_user }}:rw $SSH_AUTH_SOCK ;
+        setfacl -m u:{{ deploy_user }}:x $(dirname $SSH_AUTH_SOCK)
+      fi
+    when: deploy_user != 'root'
+    become_user: root
+
   become: true
   become_user: root
   tags: server-provision
