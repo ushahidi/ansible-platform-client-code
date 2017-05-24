@@ -6,6 +6,9 @@
   - name: ensure bucket accessibility for aws
     command: "{{ platform_client_aws_cli }} s3 ls s3://{{ platform_client_s3_dest_bucket }}"
 
+  - include: local-build.yml
+    when: platform_client_deploy_src is not defined
+
   - name: ensure presence of source files
     stat: path="{{ platform_client_deploy_src }}/index.html"
     register: src_index

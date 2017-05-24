@@ -1,0 +1,52 @@
+---
+- block:
+
+  - fail: msg="missing {{ item }} definition"
+    when: item is not defined
+    with_items:
+      - platform_client_repo_url
+      - platform_client_backend_url
+
+  - set_fact:
+      _client_build_id: "{{ ansible_date_time.iso8601_micro | to_uuid }}"
+
+  - set_fact:
+      _client_temp_folder: "{{ playbook_dir }}/tmp/{{ _client_build_id }}"
+
+  - name: create output folder
+    file: path={{ _client_temp_folder }}/output recurse=yes state=directory
+
+  - name: fetch repository and version
+    git: repo={{ platform_client_repo_url }} dest={{ _client_temp_folder }}/platform-client version={{ platform_client_version | default("master") }} depth=1
+
+  - name: build docker image
+    docker_image:
+      name: "ansible-platform-client-code-build"
+      tag: "{{ _client_build_id }}"
+      path: "{{ _client_temp_folder }}/platform-client"
+      dockerfile: docker/build.Dockerfile
+      state: present
+
+  - name: run builder
+    docker_container:
+      image: "ansible-platform-client-code-build:{{ _client_build_id }}"
+      name: "ansible-platform-client-code-build-{{ _client_build_id }}"
+      env:
+        BACKEND_URL: "{{ platform_client_backend_url }}"
+        GITHUB_TOKEN: "{{ platform_client_github_token | default('') }}"
+      volumes:
+        - "{{ _client_temp_folder }}/platform-client:/vols/src"
+        - "{{ _client_temp_folder }}/output:/vols/out"
+      command: build
+      detach: no
+      cleanup: yes
+
+  - name: remove docker image
+    docker_image:
+      name: "ansible-platform-client-code-build"
+      tag: "{{ _client_build_id }}"
+      state: absent
+
+  - set_fact: platform_client_deploy_src="{{ _client_temp_folder }}/output/last_build"
+
+  delegate_to: 127.0.0.1

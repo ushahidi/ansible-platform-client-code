@@ -15,4 +15,5 @@
 
   become: true
   become_user: root
+  when: deploy_user != 'root' 
   tags: server-provision

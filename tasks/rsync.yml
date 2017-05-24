@@ -8,17 +8,17 @@
   tags: server-provision
 
 - block:
-  - fail: msg="platform_client_deploy_src is not defined"
-    when: platform_client_deploy_src is not defined  
+  - include: local-build.yml
+    when: platform_client_deploy_src is not defined or not platform_client_deploy_src
 
   - name: ensure presence of source files at {{ platform_client_deploy_src }}
     local_action: stat path="{{ platform_client_deploy_src }}/index.html"
     register: src_index
-  - fail: msg=missing source files at {{ platform_client_deploy_src }}
+  - fail: msg="missing source files at {{ platform_client_deploy_src }}"
     when: src_index.stat.isreg is not defined or not src_index.stat.isreg
 
   - name: ensure destination folder
-    file: path={{ platform_client_docroot }} state=directory
+    file: path={{ platform_client_docroot }} recurse=yes state=directory owner="{{ deploy_user }}" mode=0755
 
   - name: deploy by sync
     synchronize: src="{{ platform_client_deploy_src }}/" dest="{{ platform_client_docroot }}/"
@@ -26,14 +26,18 @@
       archive: no
       delete: yes
       recursive: yes
+      owner: no
+      rsync_opts: [ "--chmod=Dog+x,og+r" ]
       perms: yes
       times: yes
+    become: true
+    become_user: "{{ deploy_user }}"
 
   - name: copy config.js file to server
-    template: src="templates/config.js.j2" dest={{ platform_client_docroot  }}/config.js
+    template: src="templates/config.js.j2" dest={{ platform_client_docroot }}/config.js owner="{{ deploy_user }}"
     sudo: false
 
   - name: copy config.json file to server
-    template: src="templates/config.json.j2" dest={{ platform_client_docroot  }}/config.json
+    template: src="templates/config.json.j2" dest={{ platform_client_docroot }}/config.json owner="{{ deploy_user }}"
     sudo: false
   tags: code-deploy
