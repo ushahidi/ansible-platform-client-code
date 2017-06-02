@@ -4,7 +4,7 @@
 	{% if platform_client_multisite_domain %}
 	"backend_domain": "{{ platform_client_multisite_api_domain }}",
 	{% elif platform_client_backend_url %}
-	"backend_domain": "{{ platform_client_hostname }}",
+	"backend_url": "{{ platform_client_backend_url }}",
 	{% endif %}
 	"google_analytics_id": "{{ platform_client_ga_key if platform_client_ga_key else '' }}",
 	"intercom_app_id": "{{ platform_client_intercom_appid }}",
