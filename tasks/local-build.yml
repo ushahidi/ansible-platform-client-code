@@ -31,9 +31,12 @@
     docker_container:
       image: "ansible-platform-client-code-build:{{ _client_build_id }}"
       name: "ansible-platform-client-code-build-{{ _client_build_id }}"
-      env:
+      env:  # TODO: maybe change this to a .env file injected into the container?
         BACKEND_URL: "{{ platform_client_backend_url }}"
         GITHUB_TOKEN: "{{ platform_client_github_token | default('') }}"
+        TX_USERNAME: "{{ platform_client_tx_username | default('') }}"
+        TX_PASSWORD: "{{ platform_client_tx_password | default('') }}"
+        APP_LANGUAGES: "{{ platform_client_app_languages | default('') }}"
       volumes:
         - "{{ _client_temp_folder }}/platform-client:/vols/src"
         - "{{ _client_temp_folder }}/output:/vols/out"
