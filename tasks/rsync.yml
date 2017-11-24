@@ -1,5 +1,5 @@
 ---
-- include: deployer-user.yml
+- include_tasks: deployer-user.yml
 
 - name: install rsync
   apt: name=rsync state=present
@@ -8,7 +8,7 @@
   tags: server-provision
 
 - block:
-  - include: local-build.yml
+  - include_tasks: local-build.yml
     when: platform_client_deploy_src is not defined or not platform_client_deploy_src
 
   - name: ensure presence of source files at {{ platform_client_deploy_src }}
@@ -23,21 +23,21 @@
   - name: deploy by sync
     synchronize: src="{{ platform_client_deploy_src }}/" dest="{{ platform_client_docroot }}/"
     args:
-      archive: no
-      delete: yes
-      recursive: yes
-      owner: no
+      archive: false
+      delete: true
+      recursive: true
+      owner: false
       rsync_opts: [ "--chmod=Dog+x,og+r" ]
-      perms: yes
-      times: yes
+      perms: true
+      times: true
     become: true
     become_user: "{{ deploy_user }}"
 
   - name: copy config.js file to server
     template: src="templates/config.js.j2" dest={{ platform_client_docroot }}/config.js owner="{{ deploy_user }}"
-    sudo: false
+    become: false
 
   - name: copy config.json file to server
     template: src="templates/config.json.j2" dest={{ platform_client_docroot }}/config.json owner="{{ deploy_user }}"
-    sudo: false
+    become: false
   tags: code-deploy

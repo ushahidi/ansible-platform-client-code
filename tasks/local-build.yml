@@ -41,8 +41,8 @@
         - "{{ _client_temp_folder }}/platform-client:/vols/src"
         - "{{ _client_temp_folder }}/output:/vols/out"
       command: build
-      detach: no
-      cleanup: yes
+      detach: false
+      cleanup: true
 
   - name: remove docker image
     docker_image:

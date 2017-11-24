@@ -13,5 +13,5 @@
   tasks:
     - block:
       - command: testinfra --hosts="{{ inventory_hostname }}" test.py
-      ignore_errors: yes
+      ignore_errors: true
       delegate_to: 127.0.0.1

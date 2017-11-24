@@ -1,2 +1,4 @@
+---
 - src: williamyeh.nodejs
+  name: williamyeh.nodejs
   version: master

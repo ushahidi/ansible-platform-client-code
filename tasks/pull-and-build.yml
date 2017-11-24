@@ -1,6 +1,6 @@
 ---
 - block:
-  - include: deployer-user.yml
+  - include_tasks: deployer-user.yml
 
   - name: ensure availability of tools
     apt: name={{ item }} state=present

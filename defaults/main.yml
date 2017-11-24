@@ -29,7 +29,7 @@ platform_client_multisite_api_domain: "api.{{platform_client_multisite_domain}}"
 ## pull-and-build specific
 platform_client_version: master
 platform_client_repo_url: "https://github.com/ushahidi/platform-client.git"
-platform_client_update: yes
+platform_client_update: true
 platform_client_tx_username: ""
 platform_client_tx_password: ""
 platform_client_app_languages: ""

@@ -5,4 +5,4 @@ codeship.aes
 deployment.env
 .molecule
 *.pyc
-
+molecule/default/tmp

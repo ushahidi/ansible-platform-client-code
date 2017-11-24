@@ -6,7 +6,7 @@
   - name: ensure bucket accessibility for aws
     command: "{{ platform_client_aws_cli }} s3 ls s3://{{ platform_client_s3_dest_bucket }}"
 
-  - include: local-build.yml
+  - include_tasks: local-build.yml
     when: platform_client_deploy_src is not defined or not platform_client_deploy_src
 
   - name: ensure presence of source files
@@ -21,7 +21,7 @@
 
   - name: generate config.json before sync to bucket
     template: src="templates/config.json.j2" dest={{ platform_client_deploy_src }}/config.json
-    sudo: false
+    become: false
 
   - name: synchronize client contents to bucket
     command: "{{ platform_client_aws_cli }} s3 sync --delete {{ platform_client_deploy_src }} s3://{{ platform_client_s3_dest_bucket }}/{{ platform_client_s3_dest_prefix }}"
