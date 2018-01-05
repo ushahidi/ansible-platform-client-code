@@ -25,6 +25,7 @@ platform_client_oauth_id: "ushahidiui"
 platform_client_oauth_secret: "35e7f0bca957836d05ca0492211b0ac707671261"
 platform_client_multisite_domain: ""
 platform_client_multisite_api_domain: "api.{{platform_client_multisite_domain}}"
+platform_client_tos_release_date: ""
 
 ## pull-and-build specific
 platform_client_version: master
