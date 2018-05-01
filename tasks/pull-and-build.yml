@@ -1,28 +1,47 @@
 ---
-- become: false
-  block:
+- block:
+  - include_tasks: deployer-user.yml
+
+  - name: ensure availability of tools
+    apt: name={{ item }} state=present
+    with_items:
+      - acl
+      - git
+
+  - name: install gulp
+    npm: name={{ item }} global=yes
+    with_items:
+      - gulp
+      - bower
+
+  - name: give deployer user access to ssh agent
+    shell: |
+      if [ -n "$SSH_AUTH_SOCK" ]; then
+        setfacl -m u:{{ deploy_user }}:rw $SSH_AUTH_SOCK ;
+        setfacl -m u:{{ deploy_user }}:x $(dirname $SSH_AUTH_SOCK)
+      fi
+
+  become: true
+  become_user: root
+  tags: server-provision
+
+- block:
   - name: deploy platform client code from github
     git: repo={{ platform_client_repo_url }} dest={{ platform_client_base_path }} version={{ platform_client_version | default("master") }} force={{ platform_client_update }} update={{ platform_client_update }}
 
-  # Ideally this happens in provisioning role
-  - name: install gulp
-    npm: name=gulp global=yes
-    become: true
-    become_user: root
-
   - name: install packages using npm
-    npm:
-      path: "{{ platform_client_base_path }}"
-      state: "{{ (platform_client_update == 'yes') | ternary('latest','present') }}"
+    command: npm install
+    args:
+      chdir: "{{ platform_client_base_path }}"
 
   - name: copy .env file to server
     template: src="templates/platform-client-dot-env.j2" dest="{{ platform_client_base_path }}/.env"
 
-  # todo move to gulp build
   - name: download translations
     command: gulp transifex-download
     args:
       chdir: "{{ platform_client_base_path }}"
+    when: platform_client_tx_username is defined and platform_client_tx_username and platform_client_tx_password is defined and platform_client_tx_password
 
   - name: run gulp to complete setup
     command: gulp build
@@ -30,9 +49,11 @@
       chdir: "{{ platform_client_base_path }}"
 
   - name: copy config.js file to server
-    template: src="templates/config.js.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.js
+    template: src="templates/config.js.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.js mode=0644
 
   - name: copy config.json file to server
-    template: src="templates/config.json.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.json
+    template: src="templates/config.json.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.json mode=0644
 
-  # should we notify other roles here?
+  become: true
+  become_user: "{{ deploy_user }}"
+  tags: code-deploy

@@ -6,6 +6,9 @@
   - name: ensure bucket accessibility for aws
     command: "{{ platform_client_aws_cli }} s3 ls s3://{{ platform_client_s3_dest_bucket }}"
 
+  - include_tasks: local-build.yml
+    when: platform_client_deploy_src is not defined or not platform_client_deploy_src
+
   - name: ensure presence of source files
     stat: path="{{ platform_client_deploy_src }}/index.html"
     register: src_index
@@ -18,7 +21,7 @@
 
   - name: generate config.json before sync to bucket
     template: src="templates/config.json.j2" dest={{ platform_client_deploy_src }}/config.json
-    sudo: false
+    become: false
 
   - name: synchronize client contents to bucket
     command: "{{ platform_client_aws_cli }} s3 sync --delete {{ platform_client_deploy_src }} s3://{{ platform_client_s3_dest_bucket }}/{{ platform_client_s3_dest_prefix }}"
@@ -28,3 +31,4 @@
     AWS_SECRET_ACCESS_KEY: "{{ platform_client_aws_secret_access_key | default(lookup('env', 'AWS_SECRET_ACCESS_KEY')) }}"
     AWS_DEFAULT_REGION: "{{ platform_client_aws_default_region | default(lookup('env', 'AWS_DEFAULT_REGION')) }}"
   delegate_to: 127.0.0.1
+  tags: code-deploy

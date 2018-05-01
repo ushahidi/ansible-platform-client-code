@@ -1,3 +1,11 @@
 ---
 # see defaults/main.yml for details about the flavors
-- include: "{{ platform_client_deploy_flavor }}.yml"
+- name: set platform_client_deploy_src from PLATFORM_CLIENT_BUILD environment variable if available
+  set_fact: platform_client_deploy_src={{ lookup('env', 'PLATFORM_CLIENT_BUILD') }}
+  when: not platform_client_deploy_src and lookup('env', 'PLATFORM_CLIENT_BUILD')
+
+- name: check platform_client_deploy_flavor
+  fail: msg="platform_client_deploy_flavor is not defined"
+  when: platform_client_deploy_flavor is not defined
+
+- include_tasks: "{{ platform_client_deploy_flavor }}.yml"

@@ -1,0 +1,19 @@
+---
+- block:
+  - name: check deploy_user
+    fail: msg="deploy_user is not defined"
+    when: deploy_user is not defined or not deploy_user
+
+  - name: set up deployment account
+    user: name={{ deploy_user }} comment="Deployment Account" state=present shell=/bin/bash
+
+  - name: create platform-client directory
+    file: path={{ platform_client_base_path }} state=directory owner={{ deploy_user }} group={{ deploy_user }}
+
+  - name: claim ownership of platform-client directory
+    file: path={{ platform_client_base_path }} state=directory owner={{ deploy_user }} recurse=yes
+
+  become: true
+  become_user: root
+  when: deploy_user != 'root'
+  tags: server-provision

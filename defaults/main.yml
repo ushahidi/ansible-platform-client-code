@@ -12,12 +12,15 @@ platform_client_deploy_flavor: pull-and-build
 ## common variables
 platform_client_base_path: /var/www/platform-client
 platform_client_static_folder: server/www
+
+# - contents of configuration files:
 platform_client_intercom_appid: ""
 platform_client_app_store_id: ""
 platform_client_mapbox_api_key: ""
 platform_client_raven_url: ""
 platform_client_backend_url: ""
 platform_client_ga_key: ""
+platform_client_google_maps_api_key: ""
 platform_client_oauth_id: "ushahidiui"
 platform_client_oauth_secret: "35e7f0bca957836d05ca0492211b0ac707671261"
 platform_client_multisite_domain: ""
@@ -25,9 +28,9 @@ platform_client_multisite_api_domain: "api.{{platform_client_multisite_domain}}"
 platform_client_tos_release_date: ""
 
 ## pull-and-build specific
-platform_client_version: develop
+platform_client_version: master
 platform_client_repo_url: "https://github.com/ushahidi/platform-client.git"
-platform_client_update: yes
+platform_client_update: true
 platform_client_tx_username: ""
 platform_client_tx_password: ""
 platform_client_app_languages: ""
@@ -43,7 +46,7 @@ platform_client_deploy_src: ""
 platform_client_s3_dest_bucket: ""
 platform_client_s3_dest_prefix: ""    # don't comment this default
 
-# - s3 api access details (can also be provided via environment)
+# - s3 api access details (defaults provided via environment)
 # platform_client_aws_access_key_id:
 # platform_client_aws_secret_access_key:
 # platform_client_aws_default_region:

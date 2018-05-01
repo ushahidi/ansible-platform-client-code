@@ -1,30 +1,43 @@
 ---
+- include_tasks: deployer-user.yml
+
 - name: install rsync
   apt: name=rsync state=present
-  sudo: true
+  become: true
+  become_user: root
+  tags: server-provision
 
-- name: ensure presence of source files at {{ platform_client_deploy_src }}
-  local_action: stat path="{{ platform_client_deploy_src }}/index.html"
-  register: src_index
-- fail: msg=missing source files at {{ platform_client_deploy_src }}
-  when: src_index.stat.isreg is not defined or not src_index.stat.isreg
+- block:
+  - include_tasks: local-build.yml
+    when: platform_client_deploy_src is not defined or not platform_client_deploy_src
 
-- name: ensure destination folder
-  file: path={{ platform_client_base_path }}/{{ platform_client_static_folder }} state=directory
+  - name: ensure presence of source files at {{ platform_client_deploy_src }}
+    local_action: stat path="{{ platform_client_deploy_src }}/index.html"
+    register: src_index
+  - fail: msg="missing source files at {{ platform_client_deploy_src }}"
+    when: src_index.stat.isreg is not defined or not src_index.stat.isreg
 
-- name: deploy by sync
-  synchronize: src="{{ platform_client_deploy_src }}/" dest="{{ platform_client_base_path }}/{{ platform_client_static_folder }}/"
-  args:
-    archive: no
-    delete: yes
-    recursive: yes
-    perms: yes
-    times: yes
+  - name: ensure destination folder
+    file: path={{ platform_client_docroot }} recurse=yes state=directory owner="{{ deploy_user }}" mode=0755
 
-- name: copy config.js file to server
-  template: src="templates/config.js.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.js
-  sudo: false
+  - name: deploy by sync
+    synchronize: src="{{ platform_client_deploy_src }}/" dest="{{ platform_client_docroot }}/"
+    args:
+      archive: false
+      delete: true
+      recursive: true
+      owner: false
+      rsync_opts: [ "--chmod=Dog+x,og+r" ]
+      perms: true
+      times: true
+    become: true
+    become_user: "{{ deploy_user }}"
 
-- name: copy config.json file to server
-  template: src="templates/config.json.j2" dest={{ platform_client_base_path }}/{{ platform_client_static_folder }}/config.json
-  sudo: false
+  - name: copy config.js file to server
+    template: src="templates/config.js.j2" dest={{ platform_client_docroot }}/config.js owner="{{ deploy_user }}"
+    become: false
+
+  - name: copy config.json file to server
+    template: src="templates/config.json.j2" dest={{ platform_client_docroot }}/config.json owner="{{ deploy_user }}"
+    become: false
+  tags: code-deploy
