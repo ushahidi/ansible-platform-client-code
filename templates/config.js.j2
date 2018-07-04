@@ -13,7 +13,8 @@ window.ushahidi = {
 	mapboxApiKey: "{{ platform_client_mapbox_api_key }}",
 	googleMapsApiKey: "{{ platform_client_google_maps_api_key }}",
 	ravenUrl: "{{ platform_client_raven_url }}",
-	tosReleaseDate: "{{platform_client_tos_release_date}}"
+	tosReleaseDate: "{{platform_client_tos_release_date}}",
+	environment: "{{ platform_client_environment }}"
 };
 
 {% if platform_client_multisite_domain %}
