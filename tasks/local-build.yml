@@ -44,6 +44,14 @@
       detach: false
       cleanup: true
 
+  - name: record name of local user
+    set_fact: _local_user={{ lookup('env', 'USER') }}
+
+  - name: ensure ownership of built files
+    file: path="{{ _client_temp_folder }}/output" owner="{{ _local_user }}" recurse=yes
+    become: yes
+    become_user: root
+
   - name: remove docker image
     docker_image:
       name: "ansible-platform-client-code-build"
