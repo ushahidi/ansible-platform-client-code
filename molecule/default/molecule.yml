@@ -7,8 +7,14 @@ lint:
   name: yamllint
   enabled: false
 platforms:
-  - name: ansible_platform_client_code
+  - name: ansible_platform_client_code_trusty
     image: ubuntu:trusty
+    groups:
+      - ansible_targets
+  - name: ansible_platform_client_code_xenial
+    image: ubuntu:xenial
+    groups:
+      - ansible_targets
 provisioner:
   name: ansible
   lint:

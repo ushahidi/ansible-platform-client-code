@@ -1,17 +1,18 @@
 ---
 - name: Converge (pull and build)
-  hosts: all
+  hosts: ansible_targets
   roles:
     - role: williamyeh.nodejs
       nodejs_version: "6"
       become: true
       become_user: root
+
     - role: ansible-platform-client-code
       deploy_user: deploy
       platform_client_deploy_flavor: pull-and-build
 
 - name: Converge (rsync)
-  hosts: all
+  hosts: ansible_targets
   vars:
     client_version: v3.7.1
     github_release_url: https://github.com/ushahidi/platform-client/releases/download/{{ client_version }}/ushahidi-platform-client-bundle-{{ client_version }}.tar.gz
@@ -39,10 +40,43 @@
       platform_client_docroot: "/var/www/platform-client-rsync"
 
 - name: Converge (rsync + docker)
-  hosts: all
+  hosts: ansible_targets
   roles:
     - role: ansible-platform-client-code
       deploy_user: deploy
       platform_client_deploy_flavor: rsync
       platform_client_version: develop
       platform_client_docroot: "/var/www/platform-client-rsync"
+
+- name: Converge (s3)
+  hosts: ansible_targets
+  vars:
+    client_version: v3.7.1
+    github_release_url: https://github.com/ushahidi/platform-client/releases/download/{{ client_version }}/ushahidi-platform-client-bundle-{{ client_version }}.tar.gz
+    test_files_folder: "{{ playbook_dir }}/.molecule/files"
+    test_client_folder: "{{ test_files_folder }}/ushahidi-platform-client-bundle-{{ client_version }}"
+  pre_tasks:
+    - block:
+      - name: create local folder for client files
+        file:
+          path: "{{ test_files_folder }}"
+          recurse: true
+          state: directory
+      - name: download and extract client release
+        unarchive:
+          src: "{{ github_release_url }}"
+          dest: "{{ test_files_folder }}"
+          remote_src: true
+          creates: "{{ test_client_folder }}/index.html"
+      delegate_to: 127.0.0.1
+    - name: generate random string
+      set_fact:
+        run_id: "{{ lookup('password', '/dev/null chars=ascii_letters,digits length=8') }}"
+
+  roles:
+    - role: ansible-platform-client-code
+      deploy_user: deploy
+      platform_client_deploy_flavor: s3-sync
+      platform_client_deploy_src: "{{ test_client_folder }}"
+      platform_client_s3_dest_bucket: ushahidi-ansible-tests
+      platform_client_s3_dest_prefix: ansible-platform-client-code-molecule-{{ run_id }}
