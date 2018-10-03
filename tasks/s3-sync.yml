@@ -29,8 +29,8 @@
         {{ "--exclude '*'" if sync_group.include is defined else "" }}
         {% if sync_group.include is defined %}{%- for inc in sync_group.include -%} --include '{{ inc }}' {% endfor %}{% endif %}
         {% if sync_group.exclude is defined %}{%- for exc in sync_group.exclude -%} --exclude '{{ exc }}' {% endfor %}{% endif %}
-        --acl {{ sync_group.acl | default(platform_client_s3_sync_global_args.acl) }}
-        --cache-control {{ sync_group.cache_control | default(platform_client_s3_sync_global_args.cache_control | default(omit)) }}
+        --acl '{{ sync_group.acl | default(platform_client_s3_sync_global_args.acl) }}'
+        --cache-control '{{ sync_group.cache_control | default(platform_client_s3_sync_global_args.cache_control | default(omit)) }}'
         {{ platform_client_deploy_src }}
         s3://{{ platform_client_s3_dest_bucket }}/{{ platform_client_s3_dest_prefix }}
     with_items: "{{ platform_client_s3_sync_groups }}"
