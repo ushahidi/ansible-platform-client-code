@@ -52,9 +52,9 @@ platform_client_s3_sync_global_args:
 
 platform_client_s3_sync_groups:
   - include: [ index.html, config.js, config.json, manifest.json, locales/* ]
-    cache_control: max-age=60
+    cache_control: "public, max-age=60, s-maxage=60"
   - exclude: [ index.html, config.js, config.json, manifest.json, locales/* ]
-    cache_control: max-age=31556926
+    cache_control: "public, max-age=31536000, s-maxage=31536000"
 
 # - s3 api access details (defaults provided via environment)
 # platform_client_aws_access_key_id:
