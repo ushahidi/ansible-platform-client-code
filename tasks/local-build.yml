@@ -37,6 +37,7 @@
         TX_USERNAME: "{{ platform_client_tx_username | default('') }}"
         TX_PASSWORD: "{{ platform_client_tx_password | default('') }}"
         APP_LANGUAGES: "{{ platform_client_app_languages | default('') }}"
+        ASSETS_DOMAIN: "{{ platform_client_assets_domain | default('') }}"
       volumes:
         - "{{ _client_temp_folder }}/platform-client:/vols/src"
         - "{{ _client_temp_folder }}/output:/vols/out"

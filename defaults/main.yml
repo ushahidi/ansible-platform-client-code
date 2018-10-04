@@ -27,6 +27,7 @@ platform_client_multisite_domain: ""
 platform_client_multisite_api_domain: "api.{{platform_client_multisite_domain}}"
 platform_client_tos_release_date: ""
 platform_client_environment: ""
+platform_client_assets_domain: ""
 
 ## pull-and-build specific
 platform_client_version: master
