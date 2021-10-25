@@ -52,9 +52,11 @@ platform_client_s3_sync_global_args:
   acl: public-read
 
 platform_client_s3_sync_groups:
-  - include: [ index.html, config.js, config.json, manifest.json, locales/* ]
-    cache_control: "public, max-age=60, s-maxage=60"
-  - exclude: [ index.html, config.js, config.json, manifest.json, locales/* ]
+  - include: [ index.html, config.js, config.json, manifest.json, importmap.json ]
+    cache_control: "public, max-age=0, s-maxage=0, must-revalidate"
+  - include: [ locales/* ]
+    cache_control: "public, max-age=60, s-maxage=60, stale-while-revalidate=86400"
+  - exclude: [ index.html, config.js, config.json, manifest.json, importmap.json, locales/* ]
     cache_control: "public, max-age=31536000, s-maxage=31536000"
 
 # - s3 api access details (defaults provided via environment)
