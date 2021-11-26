@@ -1,13 +1,7 @@
-// Configure your Ushahidi deployment
-//
-// Uncomment lines below to configure your deployment
-// window.ushahidi = {
-// 	backendUrl : "https://ushahidi-platform-api-release.herokuapp.com"
-// };
-
 window.ushahidi = {
 	gaEnabled : {{ 'true' if platform_client_ga_key else 'false' }},
 	gaKey : "{{ platform_client_ga_key }}",
+	googleTagManager : "{{ platform_client_gtm_key }}",
 	intercomAppId: "{{ platform_client_intercom_appid }}",
 	appStoreId: "{{ platform_client_app_store_id }}",
 	mapboxApiKey: "{{ platform_client_mapbox_api_key }}",
